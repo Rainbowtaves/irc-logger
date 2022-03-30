@@ -39,5 +39,3 @@ App will be optimized for handling [Slack's](https://slack.com) syntax.
 ## About handling private channels
 If you don't want to log some channels just `/part` them so irssi won't collect logs.
 
-## Todo
-1. Parsing slack's syntax.
