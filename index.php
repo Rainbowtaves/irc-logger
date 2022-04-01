@@ -103,6 +103,7 @@
 		<!--<script src="js/bootstrap-datepicker.pl.min.js"></script>-->
 		
 		<script>
+            var stringNumber = 0;
 		function changeChannel(c) {
 			channel=c;
 			change();
@@ -121,10 +122,11 @@
 
 		function changeDate(d) {
 			date=d;
+            stringNumber = 0;
 			change();
 		}
 		
-		function change() {
+		function change2() {
 			var http = new XMLHttpRequest();
 			http.open("POST", "getlog.php", true);
 			http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -134,9 +136,28 @@
 				document.getElementById('log').innerHTML  = http.responseText;
 			}
 		}
-		
+		function change(){
+		    $.ajax({
+                url: 'getlog.php',
+                method: 'post',
+                dataType: 'json',
+                async: false,
+                data: {
+                    channel:channel,
+                    date:date,
+                    search:document.getElementById("myInput").value
+                },
+                success: function(data){
+                    $('#log').html(data.html);
+                    //$('#log').append(data.lenght);
+                    stringNumber = data.lenght;
+                }
+            })
+
+        }
 		$(document).ready( function(){
-			$('#datepicker').datepicker({
+
+		    $('#datepicker').datepicker({
 				format: 'dd-mm-yyyy',
 				language: 'ru',
 				todayHighlight: true
@@ -146,8 +167,50 @@
 				var formattedDate = $("#datepicker").datepicker('getFormattedDate').split('-');
 				isoDate = formattedDate[2] + "-" + formattedDate[1]  + "-" + formattedDate[0];
 				changeDate(isoDate);
-			});		
-		});
+			});
+            setInterval(newLineChecker, 10000);
+
+            function newLineChecker() {
+                $.ajax({
+                    url: 'check.php',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        channel: channel,
+                        date: date,
+                        search: document.getElementById("myInput").value
+                    },
+                    success: function (data) {
+                        if (stringNumber < data){
+                            getChengedData();
+                            //alert(data);
+                        }
+
+
+                    }
+
+                })
+            }
+            function getChengedData() {
+                $.ajax({
+                    url: 'exec.php',
+                    method: 'post',
+                    dataType: 'json',
+                    async: false,
+                    data: {
+                        channel: channel,
+                        date: date,
+                        search: document.getElementById("myInput").value,
+                        old_string_number:stringNumber
+                    },
+                    success: function (data) {
+                        //$('#log').html(data.html);
+                        $('#log').append(data.html);
+                        stringNumber = data.lenght;
+                    }
+                })
+            }
+		})
 		</script>
 		<script>
 		function myFunction() {
