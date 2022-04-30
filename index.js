@@ -36,7 +36,7 @@ function htmlspecialchars(str) {
 app.post('/check', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
     const {channel, date} = req.body
-    if (!channel && !date) return res.sendStatus(400)
+    if (!channel || !date) return res.sendStatus(400)
     try {
         const logs = await realpath('logs')
         const filename = path.join(logs, channel, date+".log")
@@ -51,7 +51,7 @@ app.post('/check', async (req, res) => {
 app.post('/getlog', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
     const {channel, date, search, offset} = req.body
-    if (!channel && !date) return res.sendStatus(400)
+    if (!channel || !date) return res.sendStatus(400)
     try {
         const logs = await realpath('logs')
         const filename = path.join(logs, channel, date+".log")

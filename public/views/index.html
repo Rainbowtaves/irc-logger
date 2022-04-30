@@ -10,13 +10,14 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
+
     <!--<script src="js/ny.js"></script>-->
 
 </head>
-<body style="background-color: #0E0E0E">
+<body style="background-color: #0E0E0E" data-simplebar>
 <div>
     <div>
-        <div class="affix" style="float: left; height: 100%; background-color: #171717; overflow: auto">
+        <div class="affix" style="float: left; height: 100%; background-color: #171717; overflow-x: hidden;">
             <br>
             <h2 class="ui center aligned icon header">
                 <font color="#FFFFFF">
@@ -28,6 +29,13 @@
             <p class="text-center"><font color="#FFF"><b>Server timezone:</b><br>Europe/Moscow (UTC +3) </font></p>
 
             <center>
+                <div class="ui inverted divider"></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="autoScrollCheck" checked>
+                    <label class="form-check-label" for="autoScrollCheck">
+                        <font color="#FFF">Auto-scroll</font>
+                    </label>
+                </div>
                 <div class="ui inverted divider"></div>
                 <div class="btn-group dropdown">
                     <!-- There's button which contains dropdown channel menu -->
@@ -104,7 +112,6 @@
                 </center></font><br>
             </p>
         </div>
-
     </div>
 
     <div id="log" style="float: left; width: 85%; background-color: #0E0E0E; color: #FFF; word-wrap: break-word">

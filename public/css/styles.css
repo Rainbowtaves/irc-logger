@@ -63,4 +63,11 @@ myInput {
 .dropdown-toggle {
   width: 157px;
   height: 34px;
+
+}
+.affix {
+    scrollbar-width: none;
+}
+.affix::-webkit-scrollbar {
+    display: none;
 }

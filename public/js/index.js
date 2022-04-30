@@ -1,3 +1,6 @@
+var log = document.getElementById('log')
+var autoScrollCheck = document.getElementById('autoScrollCheck')
+var notFound =  '<center><h1><font color=#FF0000>404 Not Found</font></h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"></img></center>'
 var stringNumber,
     channel,
     date
@@ -14,6 +17,7 @@ function changeDate(d) {
 }
 
 function change() {
+    if (!channel || !date) return
     $.ajax({
         url: 'getlog',
         method: 'post',
@@ -26,11 +30,12 @@ function change() {
         }),
         success: function (data) {
             data = JSON.parse(data)
-            document.getElementById("log").innerHTML = data.html
+            log.innerHTML = data.html || notFound
             stringNumber = data.length;
+            if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
         },
         error: function (data) {
-            document.getElementById("log").innerHTML = '<center><h1><font color=#FF0000>404 Not Found</font></h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"></img></center>'
+            log.innerHTML = notFound
         }
     })
 
@@ -55,7 +60,7 @@ $(document).ready(function () {
         lastInput = setTimeout(() => change(), 1000)
     })
 
-    setInterval(newLineChecker, 10000);
+    setInterval(newLineChecker, 6000);
 
     function newLineChecker() {
         if (!channel || !date) return
@@ -87,11 +92,14 @@ $(document).ready(function () {
             data: JSON.stringify({
                 channel: channel,
                 date: date,
-                search: document.getElementById("myInput").value
+                search: document.getElementById("myInput").value,
+                offset: stringNumber
             }),
             success: function (data) {
-                document.getElementById('log').innerHTML += data.html
+                data = JSON.parse(data)
+                log.innerHTML += data.html
                 stringNumber = data.length;
+                if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
             }
         })
     }
