@@ -4,6 +4,7 @@
   "description": "irc-logger is a web app that displays saved daily logs from irssi.",
   "main": "index.js",
   "scripts": {
+    "start": "pm2 restart ecosystem.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,8 +19,10 @@
   "homepage": "https://github.com/Rainbowtaves/irc-logger#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
+    "chalk": "^4.1.2",
     "check-disk-space": "^3.3.0",
     "eta": "^1.12.3",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "moment": "^2.29.3"
   }
 }

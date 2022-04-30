@@ -60,7 +60,7 @@ $(document).ready(function () {
         lastInput = setTimeout(() => change(), 1000)
     })
 
-    setInterval(newLineChecker, 6000);
+    setInterval(newLineChecker, 10000);
 
     function newLineChecker() {
         if (!channel || !date) return
