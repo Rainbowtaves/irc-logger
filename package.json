@@ -1,0 +1,25 @@
+{
+  "name": "irc-logger",
+  "version": "1.0.0",
+  "description": "irc-logger is a web app that displays saved daily logs from irssi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rainbowtaves/irc-logger.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rainbowtaves/irc-logger/issues"
+  },
+  "homepage": "https://github.com/Rainbowtaves/irc-logger#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "check-disk-space": "^3.3.0",
+    "eta": "^1.12.3",
+    "express": "^4.18.1"
+  }
+}
