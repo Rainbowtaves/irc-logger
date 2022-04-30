@@ -3,6 +3,7 @@ const path = require("path");
 const eta = require("eta");
 const app = express()
 const checkDiskSpace = require('check-disk-space').default
+const logger = require('./logger')
 const { realpath, readdir, readFile } = require('fs/promises')
 
 app.engine('html', eta.renderFile)
@@ -32,6 +33,18 @@ function htmlspecialchars(str) {
     return str;
 }
 
+async function parseNick(nick) {
+    if (!nick) return ""
+    const users = JSON.parse((await readFile('./approved.json', 'utf8')).toString())
+    for (let u of users) {
+        if (nick.indexOf(u.username) !== -1) {
+            let parsedNick = `<span class="nick" ${u.color ? `style="color: ${u.color};"`: ""}>${htmlspecialchars(nick)}</span> `
+            let img = u.icon ? `<img width=14px height=14px title="${u.imgTitle || ""}" src="${u.icon}"> ` : ""
+            return img+parsedNick
+        }
+    }
+    return `<span class="nick">${htmlspecialchars(nick)}</span> `
+}
 
 app.post('/check', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
@@ -41,10 +54,10 @@ app.post('/check', async (req, res) => {
         const logs = await realpath('logs')
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
-        res.status(200).send((f.toString().split('\n').length-1).toString())
+        return res.status(200).send((f.toString().split('\n').length-1).toString())
     } catch (e) {
         console.error(e)
-        res.sendStatus(404)
+        return res.sendStatus(404)
     }
 })
 
@@ -67,17 +80,7 @@ app.post('/getlog', async (req, res) => {
                 content = arr[i].slice(nick ? nick.index+nick[0].length : timestamp ? 8 : 0)
             nick = nick ? nick[0].replace(' ', '') : null
             html += timestamp ? `<span class="timestamp">${htmlspecialchars(timestamp)}</span> ` : ""
-            if (nick) {
-                if (nick.indexOf("@") !== -1) {
-                    html+= `<img width=14px height=14px title=\"Global Moderator\" src=icons/gmt.svg> <b><font color=\"#db3d03\">${nick}</font></b> `
-                } else if (nick.indexOf("Rainbowtaves") !== -1) {
-                    html += `<img width=14px height=14px title=\"Verified User, Host of this site\" src=icons/verified.png> <b><font color=\"#0084FF\">${htmlspecialchars(nick)}</font></b> `
-                } else if (nick.indexOf("Bullet4fun") !== -1) {
-                    html += `<img width=14px height=14px title=\"Verified User\" src=icons/verify.svg> <b><font color=\"#c00fff\">${htmlspecialchars(nick)}</font></b> `
-                } else {
-                    html += `<span class="nick">${htmlspecialchars(nick)}</span> `
-                }
-            }
+            html += await parseNick(nick)
             if (content.indexOf("-!-") !== -1) {
                 html += `<span class="content"> <b><font color=#474747>[IRC Notification]</b>${htmlspecialchars(content)}'</font></span> `
             } else if (content.indexOf("*") === 2) {
@@ -105,5 +108,7 @@ app.get('/', async (req,res) => {
     })
 })
 
-app.listen('8080')
+app.listen('8080', () => {
+    logger.ready('Server is ready and running at port 8080')
+})
 
