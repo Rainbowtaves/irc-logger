@@ -37,7 +37,7 @@ function get_new_string($filename = 'logs/#russian/2022-03-12.log', $old_string_
     $regex_timestamp = '/^[0-9]{2}:[0-9]{2}/';
     $regex_govnocode = "/^[0-9]{1}:[0-9]{2}:[0-9]{2}/";
 
-    while ($str_number<=$str_count) {
+    while ($str_number<$str_count) {
         $line = $file_arr[$str_number];
         //skip irssi notifications
         $pos = strpos($line, "-!- Irssi:");
