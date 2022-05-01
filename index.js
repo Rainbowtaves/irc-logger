@@ -11,16 +11,15 @@ app.set("view engine", "html")
 app.set("views", "./public/views")
 
 app.use(express.json())
-app.use('/css', express.static(path.join(__dirname, '/public/css')))
-app.use('/js', express.static(path.join(__dirname, '/public/js')))
-app.use('/icons', express.static(path.join(__dirname, '/public/icons')))
-app.use('/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
+app.use('/irc-logger/css', express.static(path.join(__dirname, '/public/css')))
+app.use('/irc-logger/js', express.static(path.join(__dirname, '/public/js')))
+app.use('/irc-logger/icons', express.static(path.join(__dirname, '/public/icons')))
+app.use('/irc-logger/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
 
 const regex = {
     nick: new RegExp(/\<[ \+\@][^\>]+\>/),
     timestamp: new RegExp(/^[0-9]{2}:[0-9]{2}/),
     link: new RegExp(/\[(https?:\/\/\S*) (.*)\]/g),
-
 }
 
 function htmlspecialchars(str) {
@@ -41,10 +40,10 @@ async function parseNick(nick) {
         specU = {}
 
     if (nick.indexOf("@") !== -1){
-        img += `<img width=14px height=14px title="Global Moderator" src="icons/gmt.svg" class="icon"> `
+        img += `<img width=14px height=14px title="Global Moderator" src="irc-logger/icons/gmt.svg" class="icon"> `
         specU.color = "#db3d03"
     } else if (nick.indexOf("+") !== -1) {
-        img += `<img width=14px height=14px title="Voiced Member (IRC)" src="icons/voice.svg" class="icon"> `
+        img += `<img width=14px height=14px title="Voiced Member (IRC)" src="irc-logger/icons/voice.svg" class="icon"> `
         specU.color = "#ffdf2e"
     }
 
