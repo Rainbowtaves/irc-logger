@@ -19,7 +19,7 @@ app.use('/irc-logger/favicon.png', express.static(path.join(__dirname, '/public/
 const regex = {
     nick: new RegExp(/\<[ \+\@][^\>]+\>/),
     timestamp: new RegExp(/^[0-9]{2}:[0-9]{2}/),
-    link: new RegExp(/\[(https?:\/\/\S*) (.*)\]/g),
+    link: new RegExp(/\[?(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.;~#?&\/=]*) ?(?:(.*[^\[\]])])?/g),
 }
 
 function htmlspecialchars(str) {
@@ -108,8 +108,13 @@ app.post('/getlog', async (req, res) => {
             } else {
                 content = `<span class="content">${htmlspecialchars(content)}</span>`
             }
+
             if (content.search(regex.link) !== -1) {
-                content = content.replaceAll(regex.link, `<a class="osulink" href="$1">$2</a>`)
+                content = content.replaceAll(regex.link, (s, ...args) => {
+                    console.log(args[1])
+                    return `<a class="osulink" href="${args[0]}" target="_blank">${args[1] ? args[1] : args[0]}</a>`
+                })
+                console.log(content)
             }
 
             html += content
