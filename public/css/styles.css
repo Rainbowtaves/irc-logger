@@ -71,3 +71,22 @@ myInput {
 .affix::-webkit-scrollbar {
     display: none;
 }
+
+#log .icon {
+    position: relative;
+    top: 10%;
+    transform: translateY(-10%);
+}
+
+.osulink {
+    text-decoration: none;
+    background-color: #284779;
+    text-shadow: 1px 1px black;
+    color: white;
+    transition: background-color 100ms linear;
+}
+
+.osulink:hover {
+    color: white;
+    background-color: #ADD8E6;
+}

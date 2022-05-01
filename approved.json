@@ -1,26 +1,42 @@
 [
   {
     "username": "Rainbowtaves",
-    "color": "#db3d03",
-    "imgTitle": "Verified User, Host of this site",
-    "icon": "icons/verified.png"
+    "color": "#0084FF",
+    "icons": [
+      {
+        "title": "Verified User, Host of this site",
+        "src": "icons/verify.svg"
+      }
+    ]
+  },
+  {
+    "username": "BanchoBot",
+    "color": "#FF007E",
+    "icons": [
+      {
+        "title": "Chat Bot",
+        "src": "icons/bot.svg"
+      }
+    ]
   },
   {
     "username": "Bullet4fun",
     "color": "#c00fff",
-    "imgTitle": "Verified User",
-    "icon": "icons/verify.svg"
+    "icons": [
+      {
+        "title": "Verified User",
+        "src": "icons/verify.svg"
+      }
+    ]
   },
   {
     "username": "robloxxa",
     "color": "#cb99c9",
-    "imgTitle": "Assistant Programmer",
-    "icon": "https://media.discordapp.net/attachments/897954773544869888/937437658773327932/811376551895629854.png"
-  },
-  {
-    "username": "@",
-    "color": "#db3d03",
-    "imgTitle": "Global Moderator",
-    "icon": "icons/gmt.svg"
+    "icons": [
+      {
+        "title": "IRC Logger Assistant Programmer",
+        "src": "icons/manfredo.png"
+      }
+    ]
   }
 ]

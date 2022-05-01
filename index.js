@@ -19,7 +19,8 @@ app.use('/favicon.png', express.static(path.join(__dirname, '/public/favicon.png
 const regex = {
     nick: new RegExp(/\<[ \+\@][^\>]+\>/),
     timestamp: new RegExp(/^[0-9]{2}:[0-9]{2}/),
-    govnocode: new RegExp(/^[0-9]{2}:[0-9]{2}:[0-9]{2}/)
+    link: new RegExp(/\[(https?:\/\/\S*) (.*)\]/g),
+
 }
 
 function htmlspecialchars(str) {
@@ -36,14 +37,28 @@ function htmlspecialchars(str) {
 async function parseNick(nick) {
     if (!nick) return ""
     const users = JSON.parse((await readFile('./approved.json', 'utf8')).toString())
+    let img = "",
+        specU = {}
+
+    if (nick.indexOf("@") !== -1){
+        img += `<img width=14px height=14px title="Global Moderator" src="icons/gmt.svg" class="icon"> `
+        specU.color = "#db3d03"
+    } else if (nick.indexOf("+") !== -1) {
+        img += `<img width=14px height=14px title="Voiced Member (IRC)" src="icons/voice.svg" class="icon"> `
+        specU.color = "#ffdf2e"
+    }
+
     for (let u of users) {
         if (nick.indexOf(u.username) !== -1) {
-            let parsedNick = `<span class="nick" ${u.color ? `style="color: ${u.color};"`: ""}>${htmlspecialchars(nick)}</span> `
-            let img = u.icon ? `<img width=14px height=14px title="${u.imgTitle || ""}" src="${u.icon}"> ` : ""
-            return img+parsedNick
+            specU = u
+            img += u.icons?.length > 0
+                ? u.icons.map((e) => `<img width=14px height=14px title="${e.title || ""}" src="${e.src}" class="icon"> `).join("")
+                : ""
+            break
         }
     }
-    return `<span class="nick">${htmlspecialchars(nick)}</span> `
+
+    return img+`<span class="nick" ${specU?.color ? `style="color: ${specU.color};"`: ""}>${htmlspecialchars(nick)}</span> `
 }
 
 app.post('/check', async (req, res) => {
@@ -64,30 +79,41 @@ app.post('/check', async (req, res) => {
 app.post('/getlog', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
     const {channel, date, search, offset} = req.body
+
     if (!channel || !date) return res.sendStatus(400)
     try {
         const logs = await realpath('logs')
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
-        let html = ''
         const arr = f.toString().split('\n')
+
         let lineOffset = offset || 0
+        let html = ''
+
         for (let i = lineOffset ; i < arr.length-1 ; i++) {
             if (search && arr[i].indexOf(search) === -1) continue
             if (arr[i].indexOf("-!- Irssi:") !== -1) continue
+
             let timestamp = arr[i].match(regex.timestamp),
                 nick = regex.nick.exec(arr[i]),
                 content = arr[i].slice(nick ? nick.index+nick[0].length : timestamp ? 8 : 0)
             nick = nick ? nick[0].replace(' ', '') : null
+
             html += timestamp ? `<span class="timestamp">${htmlspecialchars(timestamp)}</span> ` : ""
             html += await parseNick(nick)
+
             if (content.indexOf("-!-") !== -1) {
-                html += `<span class="content"> <b><font color=#474747>[IRC Notification]</b>${htmlspecialchars(content)}'</font></span> `
+                content = `<span class="content"><i><font color=#474747>${htmlspecialchars(content)}</font></i></span> `
             } else if (content.indexOf("*") === 2) {
-                html += `<span class="content"> <b><font color=#9c009c>[IRC User Action]</b>${htmlspecialchars(content)}</font></span>`
+                content = `<span class="content"><i>${htmlspecialchars(content)}</i></span>`
             } else {
-                html += `<span class="content">${htmlspecialchars(content)}</span>`
+                content = `<span class="content">${htmlspecialchars(content)}</span>`
             }
+            if (content.search(regex.link) !== -1) {
+                content = content.replaceAll(regex.link, `<a class="osulink" href="$1">$2</a>`)
+            }
+
+            html += content
             html += "<br>";
         }
         return res.json(JSON.stringify({length: arr.length-1, html: html}))
@@ -95,7 +121,6 @@ app.post('/getlog', async (req, res) => {
         console.error(e)
         return res.sendStatus(404)
     }
-
 })
 
 app.get('/', async (req,res) => {

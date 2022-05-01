@@ -1,7 +1,7 @@
-var log = document.getElementById('log')
-var autoScrollCheck = document.getElementById('autoScrollCheck')
-var notFound =  '<center><h1><font color=#FF0000>404 Not Found</font></h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"></img></center>'
-var stringNumber,
+let log = document.getElementById('log')
+let autoScrollCheck = document.getElementById('autoScrollCheck')
+let notFound =  '<center><h1><font color=#FF0000>404 Not Found</font></h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></center>'
+let stringNumber,
     channel,
     date
 
@@ -18,27 +18,28 @@ function changeDate(d) {
 
 function change() {
     if (!channel || !date) return
-    $.ajax({
-        url: 'getlog',
+    fetch('getlog', {
         method: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify({
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
             channel: channel,
             date: date,
             search: document.getElementById("myInput").value
-        }),
-        success: function (data) {
+        })
+    })
+        .then(r => r.json())
+        .then(data => {
             data = JSON.parse(data)
             log.innerHTML = data.html || notFound
             stringNumber = data.length;
             if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
-        },
-        error: function (data) {
+        })
+        .catch((e) => {
+            console.error(e)
             log.innerHTML = notFound
-        }
-    })
-
+        })
 }
 
 $(document).ready(function () {
@@ -49,12 +50,12 @@ $(document).ready(function () {
     });
 
     $("#datepicker").on("changeDate", function (event) {
-        var formattedDate = $("#datepicker").datepicker('getFormattedDate').split('-');
-        isoDate = formattedDate[2] + "-" + formattedDate[1] + "-" + formattedDate[0];
+        let formattedDate = $("#datepicker").datepicker('getFormattedDate').split('-');
+        let isoDate = formattedDate[2] + "-" + formattedDate[1] + "-" + formattedDate[0];
         changeDate(isoDate);
     });
 
-    var lastInput = 0
+    let lastInput = 0
     $("#myInput").keyup(function (event) {
         clearTimeout(lastInput)
         lastInput = setTimeout(() => change(), 1000)
@@ -64,44 +65,46 @@ $(document).ready(function () {
 
     function newLineChecker() {
         if (!channel || !date) return
-        $.ajax({
-            url: 'check',
+        fetch('check', {
             method: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify({
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
                 channel: channel,
                 date: date
-            }),
-            success: function (data) {
+            })
+        })
+            .then(async r => r.text())
+            .then(data => {
                 if (stringNumber < data) {
                     getChangedData();
                 }
-            },
-            error: function (e) {
-                console.error(e)
-            }
-        })
+            })
+            .catch(console.error)
     }
 
     function getChangedData() {
-        $.ajax({
-            url: 'getlog',
+        fetch('getlog', {
             method: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
                 channel: channel,
                 date: date,
                 search: document.getElementById("myInput").value,
                 offset: stringNumber
-            }),
-            success: function (data) {
+            })
+        })
+            .then(r => r.json())
+            .then(data => {
                 data = JSON.parse(data)
                 log.innerHTML += data.html
                 stringNumber = data.length;
                 if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
-            }
-        })
+            })
+            .catch(console.error)
     }
 })
 
