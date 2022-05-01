@@ -19,7 +19,7 @@ app.use('/irc-logger/favicon.png', express.static(path.join(__dirname, '/public/
 const regex = {
     nick: new RegExp(/\<[ \+\@][^\>]+\>/),
     timestamp: new RegExp(/^[0-9]{2}:[0-9]{2}/),
-    link: new RegExp(/\[?(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:%_\+.;~#?&\/=]*) ?(?:(.*[^\[\]])])?/g),
+    link: new RegExp(/\[?(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:;%_\+.~#?&\/=]*) ?(?:(.*)])?/g),
 }
 
 function htmlspecialchars(str) {
@@ -97,7 +97,6 @@ app.post('/getlog', async (req, res) => {
                 nick = regex.nick.exec(arr[i]),
                 content = arr[i].slice(nick ? nick.index+nick[0].length : timestamp ? 8 : 0)
             nick = nick ? nick[0].replace(' ', '') : null
-
             html += timestamp ? `<span class="timestamp">${htmlspecialchars(timestamp)}</span> ` : ""
             html += await parseNick(nick)
 
@@ -110,11 +109,7 @@ app.post('/getlog', async (req, res) => {
             }
 
             if (content.search(regex.link) !== -1) {
-                content = content.replaceAll(regex.link, (s, ...args) => {
-                    console.log(args[1])
-                    return `<a class="osulink" href="${args[0]}" target="_blank">${args[1] ? args[1] : args[0]}</a>`
-                })
-                console.log(content)
+                content = content.replaceAll(regex.link, (s, ...args) => `<a class="osulink" href="${args[0]}" target="_blank">${args[1] ? args[1] : args[0]}</a>`)
             }
 
             html += content
