@@ -9,6 +9,10 @@
 	color: #FFF09A;
 }
 
+.nick:hover {
+    color: #FFF09A;
+}
+
 .timestamp {
 	color: #7A7A7A;
 }
