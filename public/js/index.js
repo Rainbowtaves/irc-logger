@@ -100,7 +100,7 @@ $(document).ready(function () {
             .then(r => r.json())
             .then(data => {
                 data = JSON.parse(data)
-                log.innerHTML += data.html
+                $("#log").append(data.html)
                 stringNumber = data.length;
                 if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
             })
