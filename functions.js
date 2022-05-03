@@ -48,7 +48,7 @@ async function parseNick (nick) {
         }
     }
 
-    return img+`<a target="_blank" href="/redirect/nickname/${nick[2]}" class="nick" ${specU?.color ? `style="color: ${specU.color};"`: ""}>${htmlspecialchars("<"+nick[1].trim()+nick[2]+">")}</a> `
+    return img+`<a target="_blank" href="/irc-logger/redirect/nickname/${nick[2]}" class="nick" ${specU?.color ? `style="color: ${specU.color};"`: ""}>${htmlspecialchars("<"+nick[1].trim()+nick[2]+">")}</a> `
 }
 
 function parseLinks (content) {
