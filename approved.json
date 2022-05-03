@@ -5,7 +5,7 @@
     "icons": [
       {
         "title": "Verified User, Host of this site",
-        "src": "irc-logger/icons/verify.svg"
+        "src": "icons/verify.svg"
       }
     ]
   },
@@ -15,7 +15,7 @@
     "icons": [
       {
         "title": "Chat Bot",
-        "src": "irc-logger/icons/bot.svg"
+        "src": "icons/bot.svg"
       }
     ]
   },
@@ -25,7 +25,7 @@
     "icons": [
       {
         "title": "Verified User",
-        "src": "irc-logger/icons/verify.svg"
+        "src": "icons/verify.svg"
       }
     ]
   },
@@ -35,7 +35,7 @@
     "icons": [
       {
         "title": "IRC Logger Assistant Programmer",
-        "src": "irc-logger/icons/manfredo.png"
+        "src": "icons/manfredo.png"
       }
     ]
   }

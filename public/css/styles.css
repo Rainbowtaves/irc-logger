@@ -1,88 +1,92 @@
-.nav-stacked > li > a {
-	height: 20px;
-	padding: 1px;
-	padding-left: 23px;
+
+html, body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    background-color: #0E0E0E;
+    color: #FFF;
+    line-height: 1.42857143;
+    overflow: hidden;
 }
 
-.nick {
-	font-weight: bold;
-	color: #FFF09A;
+a {
+    text-decoration: none;
+    color: currentColor;
 }
 
-.nick:hover {
-    color: #FFF09A;
+a:hover {
+  color: currentColor;
 }
+
+hr.solid {
+    border-top: 1px solid #bbb;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.main {
+    position: relative;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+}
+
+.rightMenu {
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    flex-shrink: 0;
+    width: 230px;
+    height: 100%;
+    padding: 10px 0;
+    background-color: #171717;
+    overflow-x: hidden;
+    text-align: center;
+    text-align: -moz-center;
+    text-align: -webkit-center;
+    scrollbar-width: none;
+    scrollbar-gutter: stable both-edges;
+    z-index: 999;
+}
+
+.rightMenu > * {
+    flex-shrink: 0;
+}
+
+#datepicker {
+    line-height: 1.9;
+}
+
+.log {
+    background-color: #0E0E0E;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    word-break: break-word;
+    color: #FFF;
+    position: relative;
+}
+
+
+.message {
+
+}
+
 
 .timestamp {
-	color: #7A7A7A;
+    color: #7A7A7A;
 }
 
-#log {
-	float: left; 
-	margin-left: 240px; 
-	margin-top: 20px; 
-	width: auto;
-	background-color: #3e3e3e;
-
-}
-myInput {
-  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-  background-position: 10px 12px; /* Position the search icon */
-  background-repeat: no-repeat; /* Do not repeat the icon image */
-  width: 100%; /* Full-width */
-  font-size: 16px; /* Increase font-size */
-  padding: 12px 20px 12px 40px; /* Add some padding */
-  border: 1px solid #ddd; /* Add a grey border */
-  margin-bottom: 12px; /* Add some space below the input */
+a.username {
+    font-weight: bold;
+    color: #FFF09A;
+    transition: filter 100ms linear;
 }
 
-#myUL {
-  /* Remove default list styling */
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+a.username:hover {
+    filter: brightness(60%);
 }
 
-#myUL li a {
-  border: 1px solid #ddd; /* Add a border to all links */
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6; /* Grey background color */
-  padding: 12px; /* Add some padding */
-  text-decoration: none; /* Remove default text underline */
-  font-size: 18px; /* Increase the font-size */
-  color: black; /* Add a black text color */
-  display: block; /* Make it into a block element to fill the whole list */
-}
-
-#myUL li a:hover:not(.header) {
-  background-color: #eee; /* Add a hover effect to all links, except for headers */
-}
-
-.scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
-}
-
-.dropdown-toggle {
-  width: 157px;
-  height: 34px;
-
-}
-.affix {
-    scrollbar-width: none;
-}
-.affix::-webkit-scrollbar {
-    display: none;
-}
-
-#log .icon {
-    position: relative;
-    top: 10%;
-    transform: translateY(-10%);
-}
-
-.osulink {
+a.osulink {
     text-decoration: none;
     background-color: #284779;
     text-shadow: 1px 1px black;
@@ -90,7 +94,57 @@ myInput {
     transition: background-color 100ms linear;
 }
 
-.osulink:hover {
+a.osulink:hover {
     color: white;
     background-color: #ADD8E6;
 }
+
+.content {
+
+}
+
+.log .center {
+    position: absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.log .icon {
+    position: relative;
+    top: 10%;
+    transform: translateY(-10%);
+}
+
+#menuButton {
+    opacity: 0.5;
+}
+
+#menuButton:hover {
+    opacity: 1;
+    transition: opacity 100ms linear;
+}
+.scrollable-menu {
+    height: auto;
+    width: 100%;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+.dropdown-toggle {
+    width: 157px;
+    height: 34px;
+    overflow: hidden;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}
+
+@media screen and (max-width: 600px){
+    .rightMenu {
+        position: absolute;
+    }
+}
+

@@ -15,14 +15,15 @@ app.set("view engine", "html")
 app.set("views", "./public/views")
 
 app.use(express.json())
-app.use('/irc-logger/css', express.static(path.join(__dirname, '/public/css')))
-app.use('/irc-logger/js', express.static(path.join(__dirname, '/public/js')))
-app.use('/irc-logger/icons', express.static(path.join(__dirname, '/public/icons')))
-app.use('/irc-logger/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
+app.use('/css', express.static(path.join(__dirname, '/public/css')))
+app.use('/js', express.static(path.join(__dirname, '/public/js')))
+app.use('/icons', express.static(path.join(__dirname, '/public/icons')))
+app.use('/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
 
 app.get('/', async (req,res) => {
     const logsRealPath = await realpath('logs')
     const dirs = await readdir(logsRealPath)
+
     const diskSpace = await checkDiskSpace('/')
     res.render('index', {
         dirs: dirs,
@@ -51,6 +52,7 @@ app.post('/getlog', async (req, res) => {
             let timestamp = arr[i].match(regex.timestamp),
                 nick = regex.nick.exec(arr[i]),
                 content = arr[i].slice(nick ? nick.index+nick[0].length : timestamp ? 8 : 0)
+            html += '<div class="message">'
             html += timestamp ? `<span class="timestamp">${htmlspecialchars(timestamp)}</span> ` : ""
             html += await parseNick(nick)
 
@@ -67,7 +69,7 @@ app.post('/getlog', async (req, res) => {
             }
 
             html += content
-            html += "<br>";
+            html += '</div>'
         }
         return res.json(JSON.stringify({length: arr.length-1, html: html}))
     } catch (e) {
