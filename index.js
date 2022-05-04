@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const path = require("path");
 const eta = require("eta");
@@ -21,9 +23,8 @@ app.use('/icons', express.static(path.join(__dirname, '/public/icons')))
 app.use('/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
 
 app.get('/', async (req,res) => {
-    const logsRealPath = await realpath('logs')
+    const logsRealPath = await realpath(process.env.LOGSPATH || 'logs')
     const dirs = await readdir(logsRealPath)
-
     const diskSpace = await checkDiskSpace('/')
     res.render('index', {
         dirs: dirs,
@@ -34,17 +35,14 @@ app.get('/', async (req,res) => {
 app.post('/getlog', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
     const {channel, date, search, offset} = req.body
-
     if (!channel || !date) return res.sendStatus(400)
     try {
         const logs = await realpath('logs')
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
         const arr = f.toString().split('\n')
-
         let lineOffset = offset || 0
         let html = ''
-
         for (let i = lineOffset ; i < arr.length-1 ; i++) {
             if (search && arr[i].indexOf(search) === -1) continue
             if (arr[i].indexOf("-!- Irssi:") !== -1) continue
@@ -103,7 +101,7 @@ app.get('/redirect/nickname/:username', async (req, res) => {
     return res.redirect(data.url)
 })
 
-app.listen('8080', () => {
+app.listen(process.env.PORT || 8080, () => {
     logger.ready('Server is ready and running at port 8080')
 })
 
