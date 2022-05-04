@@ -62,7 +62,7 @@ You can run `pm2 save` and `pm2 startup`(requires sudo) to make pm2 start the ap
 
    More on irssi's logging in [irssi documentation](http://www.irssi.org/documentation).
 
-3. Now create symbolic link in your website directory: `ln -s ~/irclogs/<servername> logs` and you are good to run these php scripts :)
+3. Now create symbolic link in your website directory: `ln -s ~/irclogs/<servername> logs` and you are good to run these JS scripts :)
 
 ### About handling private channels
 If you don't want to log some channels just `/part` them so irssi won't collect logs.
