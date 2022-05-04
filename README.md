@@ -66,4 +66,3 @@ You can run `pm2 save` and `pm2 startup`(requires sudo) to make pm2 start the ap
 
 ### About handling private channels
 If you don't want to log some channels just `/part` them so irssi won't collect logs.
-
