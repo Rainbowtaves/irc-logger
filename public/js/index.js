@@ -1,7 +1,6 @@
 const menu = document.getElementById('menu'),
     log = document.getElementById('log'),
     channelButton = document.getElementById('channelButton'),
-    datePicker = document.getElementById('datepicker'),
     myInput = document.getElementById('myInput')
     autoScrollSwitch = document.getElementById('autoScrollSwitch')
 let notFound =  '<div class="center text-center"><h1 style="color: #dc3545;">404 Not Found</h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></div>'
@@ -11,17 +10,7 @@ let stringNumber,
     date
 
 function hideMenu(e) {
-    if (menu.offsetWidth !== 0) {
-        menu.style.width = '0'
-        e.style.position = 'fixed'
-        e.children[0].classList.remove('left')
-        e.children[0].classList.add('right')
-    } else {
-        menu.style.width = ''
-        e.style.position = 'absolute'
-        e.children[0].classList.remove('right')
-        e.children[0].classList.add('left')
-    }
+    menu.style.width = menu.offsetWidth !== 0 ? '0' : ''
     e.blur()
 }
 

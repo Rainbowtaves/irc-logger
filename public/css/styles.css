@@ -44,7 +44,6 @@ hr.solid {
     text-align: -moz-center;
     text-align: -webkit-center;
     scrollbar-width: none;
-    scrollbar-gutter: stable both-edges;
     z-index: 999;
 }
 
@@ -117,11 +116,13 @@ a.osulink:hover {
     transform: translateY(-10%);
 }
 
-#menuButton {
+.menuButton {
+    position: absolute;
+    top: 5px; left: 5px;
     opacity: 0.5;
 }
 
-#menuButton:hover {
+.menuButton:hover {
     opacity: 1;
     transition: opacity 100ms linear;
 }
