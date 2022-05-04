@@ -1,9 +1,18 @@
-let log = document.getElementById('log')
-let autoScrollCheck = document.getElementById('autoScrollCheck')
-let notFound =  '<center><h1><font color=#FF0000>404 Not Found</font></h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></center>'
+const menu = document.getElementById('menu'),
+    log = document.getElementById('log'),
+    channelButton = document.getElementById('channelButton'),
+    myInput = document.getElementById('myInput')
+    autoScrollSwitch = document.getElementById('autoScrollSwitch')
+let notFound =  '<div class="center text-center"><h1 style="color: #dc3545;">404 Not Found</h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></div>'
+let loading = '<div class="center"><i class="huge notched circle loading icon"></i></div>'
 let stringNumber,
     channel,
     date
+
+function hideMenu(e) {
+    menu.style.width = menu.offsetWidth !== 0 ? '0' : ''
+    e.blur()
+}
 
 function changeChannel(c) {
     channel = c;
@@ -16,8 +25,15 @@ function changeDate(d) {
     change();
 }
 
+function disableOnLoad(bool = true) {
+    channelButton.disabled = bool
+    myInput.disabled = bool
+}
+
 function change() {
     if (!channel || !date) return
+    log.innerHTML = loading
+    disableOnLoad()
     fetch('getlog', {
         method: 'post',
         headers: {
@@ -34,11 +50,14 @@ function change() {
             data = JSON.parse(data)
             log.innerHTML = data.html || notFound
             stringNumber = data.length;
-            if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
+            if(autoScrollSwitch.checked) log.scroll({top: log.scrollHeight})
         })
         .catch((e) => {
             console.error(e)
             log.innerHTML = notFound
+        })
+        .finally(() => {
+            disableOnLoad(false)
         })
 }
 
@@ -102,7 +121,7 @@ $(document).ready(function () {
                 data = JSON.parse(data)
                 $("#log").append(data.html)
                 stringNumber = data.length;
-                if(autoScrollCheck.checked) window.scroll({top: log.scrollHeight})
+                if (autoScrollSwitch.checked) log.scroll({top: log.scrollHeight})
             })
             .catch(console.error)
     }

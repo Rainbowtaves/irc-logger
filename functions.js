@@ -29,11 +29,11 @@ async function parseNick (nick) {
 
     switch (nick[1]){
         case "@":
-            img += `<img width=14px height=14px title="Global Moderator" src="irc-logger/icons/gmt.svg" class="icon"> `
+            img += `<img width=14px height=14px title="Global Moderator" src="icons/gmt.svg" class="icon"> `
             specU.color = "#db3d03"
             break
         case "+":
-            img += `<img width=14px height=14px title="Voiced Member (IRC)" src="irc-logger/icons/voice.svg" class="icon"> `
+            img += `<img width=14px height=14px title="Voiced Member (IRC)" src="icons/voice.svg" class="icon"> `
             specU.color = "#ffdf2e"
             break
     }
@@ -48,7 +48,7 @@ async function parseNick (nick) {
         }
     }
 
-    return img+`<a target="_blank" href="/irc-logger/redirect/nickname/${nick[2]}" class="nick" ${specU?.color ? `style="color: ${specU.color};"`: ""}>${htmlspecialchars("<"+nick[1].trim()+nick[2]+">")}</a> `
+    return img+`<a target="_blank" href="/irc-logger/redirect/nickname/${nick[2]}" class="username" ${specU?.color ? `style="color: ${specU.color};"`: ""}>${htmlspecialchars("<"+nick[1].trim()+nick[2]+">")}</a> `
 }
 
 function parseLinks (content) {

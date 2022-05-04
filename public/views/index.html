@@ -1,165 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>[β]Rainbowtaves' Logs</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <link href="irc-logger/favicon.png" rel="icon" type="image/png"/>
-    <link href="irc-logger/css/semanticUI/semantic.min.css" rel="stylesheet" type="text/css">
-    <link href="irc-logger/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
-    <link href="irc-logger/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="irc-logger/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
-    <link href="irc-logger/css/styles.css" rel="stylesheet" type="text/css">
-
-    <!--<script src="js/ny.js"></script>-->
-
+    <link href="favicon.png" rel="icon" type="image/png"/>
+    <link href="css/semanticUI/semantic.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.theme.css" rel="stylesheet" type="text/css">
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
-<body style="background-color: #0E0E0E" data-simplebar>
-<div>
-    <div>
-        <div class="affix" style="float: left; height: 100%; background-color: #171717; overflow-x: hidden;">
-            <br>
-            <h2 class="ui center aligned icon header">
-                <font color="#FFFFFF">
-                    <i class="ui grey inverted circular archive icon"></i>
-                    Logs<font size="1px"> β</font>
-                </font>
+<body>
+    <div class="main">
+        <button class="menuButton large ui grey circular icon button" onclick="hideMenu(this)" style="position: absolute; top: 5px; left: 5px; z-index: 500;">
+            <i class="arrow right icon"></i>
+        </button>
+        <div class="rightMenu" id="menu">
+                <button class="large ui grey circular icon button" onclick="hideMenu(this)" style="position: absolute; top: 5px; left: 5px;" >
+                    <i class="arrow left icon"></i>
+                </button>
+            <h2 class="ui center aligned icon header" style="color: white;">
+                <i style="font-size: 40px" class="ui grey inverted circular archive icon"></i>
+                Logs
             </h2>
+            <b>Server timezone:</b>
+            Europe/Moscow (UTC +3)
 
-            <p class="text-center"><font color="#FFF"><b>Server timezone:</b><br>Europe/Moscow (UTC +3) </font></p>
+            <hr class="solid">
+            <div class="form-check form-switch" style="font-size: 15px;">
+                <input class="form-check-input" type="checkbox" role="switch" id="autoScrollSwitch" checked>
+                <label class="form-check-label" for="autoScrollSwitch">Auto Scroll</label>
+            </div>
+            <hr class="solid">
+            <div class="btn-group">
+                <button aria-expanded="false"
+                        aria-haspopup="true"
+                        class="btn btn-primary dropdown-toggle"
+                        type="button"
+                        id="channelButton"
+                        data-bs-toggle="dropdown"
+                        title="Select channel from list below and pick date. TIP: You can refresh log file without refreshing page, just click on the date again.">
+                    <i class="icon hashtag"></i>
+                    Select channel
+                    <i class="icon chevron down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu" aria-labelledby="channelButton">
+                    <% it.dirs.forEach(function(dir) { %>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="changeChannel('<%= dir %>')"><%= dir %>
+                        </a>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
 
-            <center>
-                <div class="ui inverted divider"></div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="autoScrollCheck" checked>
-                    <label class="form-check-label" for="autoScrollCheck">
-                        <font color="#FFF">Auto-scroll</font>
-                    </label>
-                </div>
-                <div class="ui inverted divider"></div>
-                <div class="btn-group dropdown">
-                    <!-- There's button which contains dropdown channel menu -->
-                    <button aria-expanded="false"
-                            aria-haspopup="true"
-                            class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="Select channel from list below and pick date. TIP: You can refresh log file without refreshing page, just click on the date again."
-                            type="button">
-                        <i class="icon hashtag"></i>
-                        Select channel
-                        <i class="icon chevron down"></i>
-                    </button>
+<!--                <% it.dirs.forEach(function(dir) { %>-->
+<!--                <li class="item">-->
+<!--                    <a data-target="#" data-toggle="pill"-->
+<!--                       href="#" onclick="changeChannel('<%= dir %>')"-->
+<!--                       tabindex="-1"><%= dir %>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <% }) %>-->
 
-
-                    <!-- There is a selection menu with channels which should be reworked -->
-                    <!-- (08.01.2022) [11:59:18] <@Kobold84> Сделай выбор чаннел листа попроще, обычным дропменю. -->
-                    <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu">
-                        <% it.dirs.forEach(function(dir) { %>
-                        <li class="item">
-                            <a data-target="#" data-toggle="pill"
-                                              href="#" onclick="changeChannel('<%= dir %>')"
-                                              tabindex="-1"><%= dir %>
-                            </a>
-                        </li>
-                        <% }) %>
-<!--                        <?php-->
-<!--									foreach(glob('logs/*', GLOB_ONLYDIR) as $dir) {-->
-<!--										$dir = str_replace('logs/', '', $dir);-->
-<!--										echo "";-->
-<!--                        }-->
-<!--                        ?>-->
-                    </ul>
-                </div>
-            </center>
-            <br>
-            <center>
+            <div style="margin-top: 15px;">
                 <div class="ui inverted left icon input">
                     <input id="myInput" placeholder="Search.." type="search">
                     <i class="search icon"></i>
                 </div>
-            </center>
+                <div id="datepicker"></div>
+            </div>
 
-            <center>
-                <div id="datepicker" style="clear: both; color: #fff"></div>
-            </center>
-            <!--suppress CssInvalidPropertyValue -->
-            <p style="position: top; bottom:8px">
-                <center>
-            <div class="ui inverted divider"></div>
-            <font color="#fff">© 2020 - <%= new Date().getFullYear() %><br><a class="ui orange image label"
-                                                                                    href="https://rainbowtaves.ru"><img
-                    src="https://a.ppy.sh/10079847?1646391845.jpeg"></img>Rainbowtaves</a><br>
-                <div class="ui icon message">
-                    <font size="5px"><i class="hdd outline icon"></i></font>
-                    <div class="content">
-                        <div class="header"> Remaining space</div>
-                        <p><% function getSymbolByQuantity(bytes) {
-                            let symbols = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-                            let exp = Math.floor(Math.log(bytes)/Math.log(1024))
-                            return (bytes/Math.pow(1024, Math.floor(exp))).toFixed(2)+" "+symbols[exp]
-                            } %>
-                            <%= getSymbolByQuantity(it.diskSpace.free)+" / "+getSymbolByQuantity(it.diskSpace.size) %></p>
-                    </div>
+
+            <div style="min-height: 70px;" class="ui icon message">
+                <i style="font-size: 25px" class="tiny hdd outline icon"></i>
+                <div class="content">
+                    <div class="header">Remaining space</div>
+                                    <p><% function getSymbolByQuantity(bytes) {
+                                        let symbols = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+                                        let exp = Math.floor(Math.log(bytes)/Math.log(1024))
+                                        return (bytes/Math.pow(1024, Math.floor(exp))).toFixed(2)+" "+symbols[exp]
+                                        } %>
+                                        <%= getSymbolByQuantity(it.diskSpace.free)+" / "+getSymbolByQuantity(it.diskSpace.size) %></p>
                 </div>
-                Thanks <a class="ui image label" href="https://osu.ppy.sh/users/10113201"><img
-                        src="https://a.ppy.sh/10113201?1645791952.jpeg"></img>Bullet4fun</a>, <br><a
-                        class="ui image label" href="https://osu.ppy.sh/users/672931"><img
-                        src="https://a.ppy.sh/672931?1628634992.png"></img>TicClick</a> and <a class="ui image label"
-                                                                                               href="https://reyie.com"><img
-                        src="https://a.ppy.sh/1896725?1485003191.png"></img>Rey</a><br> for helping me fill the<br> site
-                with logs.<br><br><br>
-                <button class="ui inverted green button"
-                        onclick="window.location.href='https://streamelements.com/rainbowtaves/tip'" type="button"><font size="3px"><i
-                        class="icon money bill alternate outline"></i> Donate</font></button>
-                </center></font><br>
-            </p>
+            </div>
+            <hr class="solid">
+            <div>
+                Thanks <a class="ui mini image label" href="https://osu.ppy.sh/users/10113201"><img src="https://a.ppy.sh/10113201?1645791952.jpeg">Bullet4fun</a>,
+                <br>
+                <a class="ui mini image label" href="https://osu.ppy.sh/users/672931"><img src="https://a.ppy.sh/672931?1628634992.png">TicClick</a>,
+                <a class="ui mini image label" href="https://reyie.com"><img src="https://a.ppy.sh/1896725?1485003191.png">Rey</a>
+                <br>
+                for helping me fill the site
+                <br>
+                and <a class="ui mini violet image label" href="https://osu.ppy.sh/users/7461231"><img src="https://a.ppy.sh/7461231?1625560690.jpeg">robloxxa</a> for refactoring backend
+                <br>
+                © 2020 - <%= new Date().getFullYear() %>
+                <br>
+                <a class="ui mini orange image label" href="https://rainbowtaves.ru"><img src="https://a.ppy.sh/10079847?1646391845.jpeg">Rainbowtaves</a>
+            </div>
+            <hr>
+            <button class="ui scrolling inverted green button"
+                    onclick="window.location.href='https://streamelements.com/rainbowtaves/tip'" type="button"><i
+                    class="icon money bill alternate outline"></i> Donate</button>
+        </div>
+        <div class="log" id="log">
+            <h1 class="center text-center">Choose channel and date</h1>
         </div>
     </div>
 
-    <div id="log" style="float: left; max-width: 85%; width: 85%; background-color: #0E0E0E; color: #FFF; word-wrap: break-word">
-        <center><h1>Choose channel and date</h1></center>
-    </div>
-</div>
-<center>
-
-    <script src="irc-logger/js/jquery-1.11.3.min.js"></script>
-    <script crossorigin="anonymous"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="irc-logger/css/semanticUI/semantic.min.js"></script>
-    <script src="irc-logger/js/jquery-ui.min.js"></script>
-    <script src="irc-logger/js/bootstrap.min.js"></script>
-    <script src="irc-logger/js/bootstrap-datepicker.min.js"></script>
-    <!--<script src="js/bootstrap-datepicker.pl.min.js"></script>-->
-    <script src="irc-logger/js/index.js"></script>
-    <script>
-        function myFunction() {
-            var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("log").innerHTML = text;
-            for (i = 0; i < ul.length; i++) {
-                a = ul[i].getElementsByTagName("a")[0];
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    ul[i].style.display = "";
-                } else {
-                    ul[i].style.display = "none";
-                }
-            }
-        }
-    </script>
-    <script>
-        $('.example .menu .browse')
-            .popup({
-                inline: true,
-                hoverable: true,
-                position: 'bottom left',
-                delay: {
-                    show: 300,
-                    hide: 800
-                }
-            })
-        ;
-    </script>
-</center>
-
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="css/semanticUI/semantic.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
