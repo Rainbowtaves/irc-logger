@@ -7,7 +7,7 @@ This is a Node JS rewrite of IRC-Logger since PHP isn't really optimized for rea
 ## Setup
 
 1. Create symlink for logs folder and name it `logs` or set the path in `.env` file
-2. To run the web-server simply go to project folder and run `npm start`
+2. To run the app simply go to project folder and run `npm start`
 
 
 
@@ -64,6 +64,6 @@ You can run `pm2 save` and `pm2 startup`(requires sudo) to make pm2 start the ap
 
 3. Now create symbolic link in your website directory: `ln -s ~/irclogs/<servername> logs` and you are good to run these php scripts :)
 
-## About handling private channels
+### About handling private channels
 If you don't want to log some channels just `/part` them so irssi won't collect logs.
 
