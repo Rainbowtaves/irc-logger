@@ -3,7 +3,7 @@ const menu = document.getElementById('menu'),
     channelButton = document.getElementById('channelButton'),
     myInput = document.getElementById('myInput')
     autoScrollSwitch = document.getElementById('autoScrollSwitch')
-let notFound =  '<div class="center text-center"><h1 style="color: #dc3545;">404 Not Found</h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></div>'
+let errorMessage =  '<div class="center text-center"><h1 style="color: #dc3545;">{{statusText}}</h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></div>'
 let loading = '<div class="center"><i class="huge notched circle loading icon"></i></div>'
 let stringNumber,
     channel,
@@ -45,7 +45,12 @@ function change() {
             search: document.getElementById("myInput").value
         })
     })
-        .then(r => r.json())
+        .then(r => {
+            if (r.ok) {
+                return r.json()
+            }
+            throw new Error(r.status+" "+r.statusText)
+        })
         .then(data => {
             data = JSON.parse(data)
             log.innerHTML = data.html || notFound
@@ -54,7 +59,7 @@ function change() {
         })
         .catch((e) => {
             console.error(e)
-            log.innerHTML = notFound
+            log.innerHTML = errorMessage.replace('{{statusText}}', e.message)
         })
         .finally(() => {
             disableOnLoad(false)
@@ -65,7 +70,8 @@ $(document).ready(function () {
     $('#datepicker').datepicker({
         format: 'dd-mm-yyyy',
         language: 'ru',
-        todayHighlight: true
+        todayHighlight: true,
+        todayBtn: false
     });
 
     $("#datepicker").on("changeDate", function (event) {
@@ -100,7 +106,9 @@ $(document).ready(function () {
                     getChangedData();
                 }
             })
-            .catch(console.error)
+            .catch((e) => {
+                console.error(e)
+            })
     }
 
     function getChangedData() {

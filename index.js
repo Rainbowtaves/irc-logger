@@ -71,7 +71,6 @@ app.post('/getlog', async (req, res) => {
         }
         return res.json(JSON.stringify({length: arr.length-1, html: html}))
     } catch (e) {
-        console.error(e)
         return res.sendStatus(404)
     }
 })
@@ -86,7 +85,6 @@ app.post('/check', async (req, res) => {
         const f = await readFile(filename, 'utf8')
         return res.status(200).send((f.toString().split('\n').length-1).toString())
     } catch (e) {
-        console.error(e)
         return res.sendStatus(404)
     }
 })
