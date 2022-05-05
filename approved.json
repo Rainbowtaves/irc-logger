@@ -38,6 +38,10 @@
         "src": "icons/verify.svg"
       },
       {
+        "title": "GitHub Contributor",
+        "src": "icons/contributor.png"
+      },
+      {
         "title": "IRC Logger Assistant Programmer",
         "src": "icons/manfredo.png"
       }
