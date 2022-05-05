@@ -9,7 +9,7 @@
       },
       {
         "title": "GitHub Contributor",
-        "src": "icons/contributor.png"
+        "src": "icons/contributor.svg"
       }
     ]
   },
@@ -43,7 +43,7 @@
       },
       {
         "title": "GitHub Contributor",
-        "src": "icons/contributor.png"
+        "src": "icons/contributor.svg"
       }
     ]
   }
