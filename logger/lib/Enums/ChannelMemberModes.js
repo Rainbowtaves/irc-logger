@@ -1,0 +1,5 @@
+
+const channelMemberModes = {
+    "v": "+",
+    "o": "@"
+}
