@@ -1,8 +1,8 @@
 {
   "irc_server": "irc.ppy.sh",
   "irc_port": "6667",
-  "irc_username": "robloxxa",
-  "irc_password": "f3016758",
+  "irc_username": "",
+  "irc_password": "",
   "irc_channels": [
     "#russian",
     "#osu",
