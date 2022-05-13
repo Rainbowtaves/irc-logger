@@ -54,6 +54,7 @@ hr.solid {
     background-color: #0E0E0E;
     width: 100%;
     height: 100%;
+    margin-left: 3px;
     overflow-x: hidden;
     word-break: break-word;
     color: #FFF;

@@ -6,6 +6,10 @@
       {
         "title": "Verified User, Host of this site",
         "src": "icons/verify.svg"
+      },
+      {
+        "title": "GitHub Contributor",
+        "src": "icons/contributor.svg"
       }
     ]
   },
@@ -39,7 +43,7 @@
       },
       {
         "title": "GitHub Contributor",
-        "src": "icons/contributor.png"
+        "src": "icons/contributor.svg"
       }
     ]
   }

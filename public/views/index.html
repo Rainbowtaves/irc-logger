@@ -15,11 +15,11 @@
 <body>
     <div class="main">
         <button class="menuButton large ui grey circular icon button" onclick="hideMenu(this)" style="position: absolute; top: 5px; left: 5px; z-index: 500;">
-            <i class="arrow right icon"></i>
+            <i class="list icon"></i>
         </button>
         <div class="rightMenu" id="menu">
                 <button class="large ui grey circular icon button" onclick="hideMenu(this)" style="position: absolute; top: 5px; left: 5px;" >
-                    <i class="arrow left icon"></i>
+                    <i class="list icon"></i>
                 </button>
             <h2 class="ui center aligned icon header" style="color: white;">
                 <i style="font-size: 40px" class="ui grey inverted circular archive icon"></i>
@@ -88,8 +88,6 @@
             </div>
             <hr class="solid">
             <div>
-                <a class="ui mini image label" href="https://github.com/Rainbowtaves/irc-logger"><img src="icons/github.png">View this project on GitHub</a>
-                <br>
                 Thanks <a class="ui mini image label" href="https://osu.ppy.sh/users/10113201"><img src="https://a.ppy.sh/10113201?1645791952.jpeg">Bullet4fun</a>,
                 <br>
                 <a class="ui mini image label" href="https://osu.ppy.sh/users/672931"><img src="https://a.ppy.sh/672931?1628634992.png">TicClick</a>,
@@ -102,6 +100,8 @@
                 © 2020 - <%= new Date().getFullYear() %>
                 <br>
                 <a class="ui mini orange image label" href="https://rainbowtaves.ru"><img src="https://a.ppy.sh/10079847?1646391845.jpeg">Rainbowtaves</a>
+                <br>
+                <a class="ui mini image label" href="https://github.com/Rainbowtaves/irc-logger"><img src="icons/github.svg">View this project on GitHub</a>
             </div>
             <hr>
             <button class="ui scrolling inverted green button"
@@ -109,7 +109,7 @@
                     class="icon money bill alternate outline"></i> Donate</button>
         </div>
         <div class="log" id="log">
-            <h1 class="center text-center">Choose channel and date</h1>
+            <h1 class="center text-center">Choose channel and date</h1><br>
         </div>
     </div>
 
