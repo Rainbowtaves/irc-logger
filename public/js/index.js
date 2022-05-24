@@ -3,7 +3,7 @@ const menu = document.getElementById('menu'),
     channelButton = document.getElementById('channelButton'),
     myInput = document.getElementById('myInput')
     autoScrollSwitch = document.getElementById('autoScrollSwitch')
-let errorMessage =  '<div class="center text-center"><h1 style="color: #dc3545;">{{statusText}}</h1><br><img src="https://cdn.discordapp.com/emojis/751824616812576818.png"/></div>'
+let errorMessage =  '<div class="center text-center"><h1 style="color: #dc3545;">{{statusText}}</h1><br><iframe width="935" height="711" src="https://www.youtube.com/embed/weRHyjj34ZE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 let loading = '<div class="center"><i class="huge notched circle loading icon"></i></div>'
 let stringNumber,
     channel,
