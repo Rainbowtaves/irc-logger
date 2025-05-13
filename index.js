@@ -92,9 +92,9 @@ app.post('/check', async (req, res) => {
 app.get('/redirect/nickname/:username', async (req, res) => {
     if(!req.params.username) res.status(400).send('No username specified')
     const username = req.params.username
-    const data = await fetch(`https://osu.ppy.sh/u/${username}`, {method: 'HEAD'})
+    const data = await fetch(`https://osu.ppy.sh/u/@${username}`, {method: 'HEAD'})
     if (data.status === 404 && username.search(regex.whiteSpace)) {
-        return res.redirect(`https://osu.ppy.sh/u/${username.replaceAll(regex.whiteSpace, '%20')}`)
+        return res.redirect(`https://osu.ppy.sh/u/@${username.replaceAll(regex.whiteSpace, '%20')}`)
     }
     return res.redirect(data.url)
 })
