@@ -34,6 +34,16 @@
     ]
   },
   {
+    "username": "Bullet",
+    "color": "#c00fff",
+    "icons": [
+      {
+        "title": "Verified User",
+        "src": "icons/verify.svg"
+      }
+    ]
+  }б
+  {
     "username": "robloxxa",
     "color": "#cb99c9",
     "icons": [
