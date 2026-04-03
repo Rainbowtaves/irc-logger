@@ -9,7 +9,13 @@ This is a Node JS rewrite of IRC-Logger since PHP isn't really optimized for rea
 1. Create symlink for logs folder and name it `logs` or set the path in `.env` file
 2. To run the app simply go to project folder and run `npm start`
 
+## Development
 
+Run ESLint to detect issues:
+
+```bash
+npm run lint
+```
 
 ## PM2 process manager
    This project has [PM2 Ecosystem Config](https://pm2.keymetrics.io/docs/usage/application-declaration/) for handling crashes or restart on changes (if `--watch` option is specified)
