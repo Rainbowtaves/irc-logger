@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm i",
-    "start": "npm start",
+    "start": "node index.js",
     "predev": "npx pm2 reload irclogger.config.js",
     "dev": "npx pm2 restart irclogger.config.js --watch",
     "prod": "npx pm2 reload irclogger.config.js && npx pm2 restart irclogger.config.js && npx pm2 log irclogger.config.js"
