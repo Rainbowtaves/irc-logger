@@ -130,6 +130,35 @@ a.osulink:hover {
     overflow-y: auto;
 }
 
+.search-wrapper {
+    width: 200px;
+}
+
+.search-go-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: #0d6efd;
+    border: 0;
+    border-radius: 0 4px 4px 0;
+    color: #fff;
+    padding: 0 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.search-go-btn:hover {
+    background: #0b5ed7;
+    color: #fff;
+}
+
+#myInput {
+    padding-right: 40px !important;
+}
+
 .channel-select-input {
     width: 200px;
     height: 42px;

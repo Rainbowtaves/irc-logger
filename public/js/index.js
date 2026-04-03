@@ -25,14 +25,12 @@ function updateQueryString() {
 
 function changeChannel(c) {
     channel = c;
-    updateQueryString();
     change();
 }
 
 function changeDate(d) {
     date = d;
     stringNumber = 0;
-    updateQueryString();
     change();
 }
 
@@ -42,6 +40,7 @@ function disableOnLoad(bool = true) {
 }
 
 function change() {
+    updateQueryString();
     if (!channel || !date) return
     log.innerHTML = loading
     disableOnLoad()
@@ -107,11 +106,8 @@ $(document).ready(function () {
     const initSearch = urlParams.get('search');
     if (initSearch) myInput.value = initSearch;
 
-    let lastInput = 0
-    $("#myInput").keyup(function (event) {
-        updateQueryString()
-        clearTimeout(lastInput)
-        lastInput = setTimeout(() => change(), 1000)
+    $("#myInput").on("keydown", function (event) {
+        if (event.key === 'Enter') { change(); }
     })
 
     setInterval(newLineChecker, 10000);
