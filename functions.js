@@ -4,8 +4,8 @@ const XRegExp = require('xregexp')
 const regex = {
     nick: new RegExp(/<([ +@])([^>]+)>/),
     timestamp: new RegExp(/^[0-9]{2}:[0-9]{2}/),
-    osuLink: new RegExp(/(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:;,%_+.!~#?&\/=]*) (.*)/),
-    link: new RegExp(/(?<!href=")(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:;,%_+.~#?&\/=]*)/g),
+    osuLink: new RegExp(/(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:;,%_+.!~#?&/=]*) (.*)/),
+    link: new RegExp(/(?<!href=")(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-a-zA-Z0-9()@:;,%_+.~#?&/=]*)/g),
     whiteSpace: new RegExp(/(?!^_)_+(?<!_$)/g)
 }
 

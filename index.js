@@ -8,7 +8,6 @@ const checkDiskSpace = require('check-disk-space').default
 const logger = require('./logger')
 const { realpath, readdir, readFile } = require('fs/promises')
 const fetch = require('node-fetch')
-const moment = require('moment')
 const {parseLinks, parseNick, htmlspecialchars, regex} = require("./functions");
 
 
@@ -72,7 +71,7 @@ app.post('/getlog', async (req, res) => {
             html += '</div>'
         }
         return res.json(JSON.stringify({length: arr.length-1, html: html}))
-    } catch (e) {
+    } catch {
         return res.sendStatus(404)
     }
 })
@@ -86,7 +85,7 @@ app.post('/check', async (req, res) => {
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
         return res.status(200).send((f.toString().split('\n').length-1).toString())
-    } catch (e) {
+    } catch {
         return res.sendStatus(404)
     }
 })

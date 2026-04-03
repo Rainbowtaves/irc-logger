@@ -96,7 +96,7 @@ const Channel = require('./Channel')
 
 
 class IrcClient extends EventEmitter {
-    constructor({host, port, username, realname, password, logging, ignoredCodes}) {
+    constructor({host, port, username, realname, password, ignoredCodes}) {
         super();
         this.ignoredCodes = ignoredCodes || [
             "333",  // Time when topic was set
@@ -285,7 +285,7 @@ class IrcClient extends EventEmitter {
                 }
                 case "QUIT": {
                     const user = splits[0].substring(1, splits[0].indexOf('!'))
-                    for (let [channelName, channel] of this.channels) {
+                    for (let [, channel] of this.channels) {
                         if (channel.members[user]) delete channel.members.user
                     }
                 }
