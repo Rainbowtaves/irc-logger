@@ -14,14 +14,25 @@ function hideMenu(e) {
     e.blur()
 }
 
+function updateQueryString() {
+    const params = new URLSearchParams();
+    if (channel) params.set('channel', channel);
+    if (date) params.set('date', date);
+    const search = myInput.value;
+    if (search) params.set('search', search);
+    history.replaceState(null, '', '?' + params.toString());
+}
+
 function changeChannel(c) {
     channel = c;
+    updateQueryString();
     change();
 }
 
 function changeDate(d) {
     date = d;
     stringNumber = 0;
+    updateQueryString();
     change();
 }
 
@@ -80,8 +91,25 @@ $(document).ready(function () {
         changeDate(isoDate);
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const initChannel = urlParams.get('channel');
+    const initDate = urlParams.get('date');
+    if (initChannel) {
+        channel = initChannel;
+        channelButton.value = initChannel;
+    }
+    if (initDate) {
+        const [y, m, d] = initDate.split('-').map(Number);
+        $('#datepicker').datepicker('update', new Date(y, m - 1, d));
+        changeDate(initDate);
+    }
+
+    const initSearch = urlParams.get('search');
+    if (initSearch) myInput.value = initSearch;
+
     let lastInput = 0
     $("#myInput").keyup(function (event) {
+        updateQueryString()
         clearTimeout(lastInput)
         lastInput = setTimeout(() => change(), 1000)
     })
