@@ -1,8 +1,9 @@
 const menu = document.getElementById('menu'),
     log = document.getElementById('log'),
     channelButton = document.getElementById('channelButton'),
-    myInput = document.getElementById('myInput')
-    autoScrollSwitch = document.getElementById('autoScrollSwitch')
+    myInput = document.getElementById('myInput'),
+    autoScrollSwitch = document.getElementById('autoScrollSwitch'),
+    caseSensitiveCheck = document.getElementById('caseSensitiveCheck')
 let errorMessage =  '<div class="center text-center"><h1 style="color: #dc3545;">{{statusText}}</h1><br><iframe width="935" height="711" src="https://www.youtube.com/embed/weRHyjj34ZE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 let loading = '<div class="center"><i class="huge notched circle loading icon"></i></div>'
 let stringNumber,
@@ -20,6 +21,7 @@ function updateQueryString() {
     if (date) params.set('date', date);
     const search = myInput.value;
     if (search) params.set('search', search);
+    if (caseSensitiveCheck.checked) params.set('case_sensitive', 'true');
     history.replaceState(null, '', '?' + params.toString());
 }
 
@@ -52,7 +54,8 @@ function change() {
         body: JSON.stringify({
             channel: channel,
             date: date,
-            search: document.getElementById("myInput").value
+            search: myInput.value,
+            case_sensitive: caseSensitiveCheck.checked
         })
     })
         .then(r => {
@@ -105,6 +108,9 @@ $(document).ready(function () {
 
     const initSearch = urlParams.get('search');
     if (initSearch) myInput.value = initSearch;
+    if (urlParams.get('case_sensitive') === 'true') caseSensitiveCheck.checked = true;
+
+    caseSensitiveCheck.addEventListener('change', () => change());
 
     $("#myInput").on("keydown", function (event) {
         if (event.key === 'Enter') { change(); }
