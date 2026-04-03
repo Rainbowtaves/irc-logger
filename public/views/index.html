@@ -34,19 +34,14 @@
                 <label class="form-check-label" for="autoScrollSwitch">Auto Scroll</label>
             </div>
             <hr class="solid">
-            <div class="btn-group">
-                <button aria-expanded="false"
-                        aria-haspopup="true"
-                        class="btn btn-primary dropdown-toggle"
-                        type="button"
-                        id="channelButton"
-                        data-bs-toggle="dropdown"
-                        title="Select channel from list below and pick date. TIP: You can refresh log file without refreshing page, just click on the date again.">
-                    <i class="icon hashtag"></i>
-                    Select channel
-                    <i class="icon chevron down"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu" aria-labelledby="channelButton">
+            <div class="dropdown">
+                <input type="text"
+                       id="channelButton"
+                       class="form-control channel-select-input"
+                       placeholder="Find channel..."
+                       autocomplete="off"
+                       title="Type to filter channels, Enter to select first match">
+                <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu">
                     <% it.dirs.forEach(function(dir) { %>
                     <li>
                         <a class="dropdown-item" href="#" onclick="changeChannel('<%= dir %>')"><%= dir %>

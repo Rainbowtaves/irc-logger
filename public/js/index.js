@@ -135,9 +135,54 @@ $(document).ready(function () {
     }
 })
 
-$(function () {
-    $(".dropdown-menu li a").click(function () {
-        $(".btn:first-child").text($(this).text());
-        $(".btn:first-child").val($(this).text());
-    });
-});
+class ChannelSelector {
+    constructor(input, menu) {
+        this.input = input;
+        this.menu = menu;
+        this.dropdown = new bootstrap.Dropdown(input, { autoClose: 'outside' });
+
+        input.addEventListener('click', () => this.dropdown.show());
+        input.addEventListener('focus', () => { input.select(); this.dropdown.show(); });
+        input.addEventListener('blur', () => setTimeout(() => this.dropdown.hide(), 150));
+        input.addEventListener('input', () => this._filter());
+        input.addEventListener('keydown', (e) => this._onKeydown(e));
+        input.addEventListener('hidden.bs.dropdown', () => this._onHidden());
+        menu.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-item')) {
+                channel = e.target.textContent.trim();
+                this.dropdown.hide();
+            }
+        }, true);
+    }
+
+    _filter() {
+        this.dropdown.show();
+        const query = this.input.value.replace(/^#/, '').toLowerCase();
+        this.menu.querySelectorAll('.dropdown-item').forEach(item => {
+            const name = item.textContent.trim().replace(/^#/, '').toLowerCase();
+            item.closest('li').style.display = name.includes(query) ? '' : 'none';
+        });
+    }
+
+    _onKeydown(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const firstVisible = [...this.menu.querySelectorAll('li')]
+                .find(li => li.style.display !== 'none' && li.querySelector('.dropdown-item'));
+            if (firstVisible) {
+                channel = firstVisible.querySelector('.dropdown-item').textContent.trim();
+                this.dropdown.hide();
+                changeChannel(channel);
+            }
+        } else if (e.key === 'Escape') {
+            this.dropdown.hide();
+        }
+    }
+
+    _onHidden() {
+        this.menu.querySelectorAll('li').forEach(li => li.style.display = '');
+        this.input.value = channel || '';
+    }
+}
+
+new ChannelSelector(channelButton, document.querySelector('.dropdown-menu'));

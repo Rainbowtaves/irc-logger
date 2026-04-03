@@ -125,18 +125,32 @@ a.osulink:hover {
 .scrollable-menu {
     height: auto;
     width: 100%;
-    max-height: 200px;
+    max-height: 240px;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.dropdown-toggle {
-    width: 157px;
-    height: 34px;
-    overflow: hidden;
+.channel-select-input {
+    width: 200px;
+    height: 42px;
+    font-size: 15px;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+    cursor: pointer;
 }
 
-.dropdown-toggle::after {
-    content: none;
+.channel-select-input:focus {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+    outline: 0;
+    cursor: text;
+}
+
+.channel-select-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 @media screen and (max-width: 600px){
