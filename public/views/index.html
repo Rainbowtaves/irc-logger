@@ -34,19 +34,14 @@
                 <label class="form-check-label" for="autoScrollSwitch">Auto Scroll</label>
             </div>
             <hr class="solid">
-            <div class="btn-group">
-                <button aria-expanded="false"
-                        aria-haspopup="true"
-                        class="btn btn-primary dropdown-toggle"
-                        type="button"
-                        id="channelButton"
-                        data-bs-toggle="dropdown"
-                        title="Select channel from list below and pick date. TIP: You can refresh log file without refreshing page, just click on the date again.">
-                    <i class="icon hashtag"></i>
-                    Select channel
-                    <i class="icon chevron down"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu" aria-labelledby="channelButton">
+            <div class="dropdown">
+                <input type="text"
+                       id="channelButton"
+                       class="form-control channel-select-input"
+                       placeholder="Find channel..."
+                       autocomplete="off"
+                       title="Type to filter channels, Enter to select first match">
+                <ul class="dropdown-menu dropdown-menu-right scrollable-menu" role="menu">
                     <% it.dirs.forEach(function(dir) { %>
                     <li>
                         <a class="dropdown-item" href="#" onclick="changeChannel('<%= dir %>')"><%= dir %>
@@ -66,9 +61,14 @@
 <!--                <% }) %>-->
 
             <div style="margin-top: 15px;">
-                <div class="ui inverted left icon input">
+                <div class="ui inverted left icon input search-wrapper">
                     <input id="myInput" placeholder="Search.." type="search">
                     <i class="search icon"></i>
+                    <button class="search-go-btn" onclick="change();">GO</button>
+                </div>
+                <div class="form-check" style="margin-top: 5px; font-size: 12px; width: 200px; text-align: left;">
+                    <input class="form-check-input" type="checkbox" id="caseSensitiveCheck">
+                    <label class="form-check-label" for="caseSensitiveCheck">case-sensitive</label>
                 </div>
                 <div id="datepicker"></div>
             </div>

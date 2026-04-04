@@ -22,8 +22,10 @@ app.use('/js', express.static(path.join(__dirname, '/public/js')))
 app.use('/icons', express.static(path.join(__dirname, '/public/icons')))
 app.use('/favicon.png', express.static(path.join(__dirname, '/public/favicon.png')))
 
+const getLogsPath = () => realpath(process.env.LOGSPATH || 'logs')
+
 app.get('/', async (req,res) => {
-    const logsRealPath = await realpath(process.env.LOGSPATH || 'logs')
+    const logsRealPath = await getLogsPath()
     const dirs = await readdir(logsRealPath)
     const diskSpace = await checkDiskSpace('/')
     res.render('index', {
@@ -34,17 +36,17 @@ app.get('/', async (req,res) => {
 
 app.post('/getlog', async (req, res) => {
     if (!req.body) return res.sendStatus(404)
-    const {channel, date, search, offset} = req.body
+    const {channel, date, search, offset, case_sensitive} = req.body
     if (!channel || !date) return res.sendStatus(400)
     try {
-        const logs = await realpath('logs')
+        const logs = await getLogsPath()
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
         const arr = f.toString().split('\n')
         let lineOffset = offset || 0
         let html = ''
         for (let i = lineOffset ; i < arr.length-1 ; i++) {
-            if (search && arr[i].indexOf(search) === -1) continue
+            if (search && (case_sensitive ? arr[i].indexOf(search) : arr[i].toLowerCase().indexOf(search.toLowerCase())) === -1) continue
             if (arr[i].indexOf("-!- Irssi:") !== -1) continue
 
             let timestamp = arr[i].match(regex.timestamp),
@@ -80,7 +82,7 @@ app.post('/check', async (req, res) => {
     const {channel, date} = req.body
     if (!channel || !date) return res.sendStatus(400)
     try {
-        const logs = await realpath('logs')
+        const logs = await getLogsPath()
         const filename = path.join(logs, channel, date+".log")
         const f = await readFile(filename, 'utf8')
         return res.status(200).send((f.toString().split('\n').length-1).toString())

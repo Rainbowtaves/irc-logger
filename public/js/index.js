@@ -1,8 +1,9 @@
 const menu = document.getElementById('menu'),
     log = document.getElementById('log'),
     channelButton = document.getElementById('channelButton'),
-    myInput = document.getElementById('myInput')
-    autoScrollSwitch = document.getElementById('autoScrollSwitch')
+    myInput = document.getElementById('myInput'),
+    autoScrollSwitch = document.getElementById('autoScrollSwitch'),
+    caseSensitiveCheck = document.getElementById('caseSensitiveCheck')
 let errorMessage =  '<div class="center text-center"><h1 style="color: #dc3545;">{{statusText}}</h1><br><iframe width="935" height="711" src="https://www.youtube.com/embed/weRHyjj34ZE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 let loading = '<div class="center"><i class="huge notched circle loading icon"></i></div>'
 let stringNumber,
@@ -12,6 +13,16 @@ let stringNumber,
 function hideMenu(e) {
     menu.style.width = menu.offsetWidth !== 0 ? '0' : ''
     e.blur()
+}
+
+function updateQueryString() {
+    const params = new URLSearchParams();
+    if (channel) params.set('channel', channel);
+    if (date) params.set('date', date);
+    const search = myInput.value;
+    if (search) params.set('search', search);
+    if (caseSensitiveCheck.checked) params.set('case_sensitive', 'true');
+    history.replaceState(null, '', '?' + params.toString());
 }
 
 function changeChannel(c) {
@@ -31,6 +42,7 @@ function disableOnLoad(bool = true) {
 }
 
 function change() {
+    updateQueryString();
     if (!channel || !date) return
     log.innerHTML = loading
     disableOnLoad()
@@ -42,7 +54,8 @@ function change() {
         body: JSON.stringify({
             channel: channel,
             date: date,
-            search: document.getElementById("myInput").value
+            search: myInput.value,
+            case_sensitive: caseSensitiveCheck.checked
         })
     })
         .then(r => {
@@ -80,10 +93,27 @@ $(document).ready(function () {
         changeDate(isoDate);
     });
 
-    let lastInput = 0
-    $("#myInput").keyup(function (event) {
-        clearTimeout(lastInput)
-        lastInput = setTimeout(() => change(), 1000)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initChannel = urlParams.get('channel');
+    const initDate = urlParams.get('date');
+    if (initChannel) {
+        channel = initChannel;
+        channelButton.value = initChannel;
+    }
+    if (initDate) {
+        const [y, m, d] = initDate.split('-').map(Number);
+        $('#datepicker').datepicker('update', new Date(y, m - 1, d));
+        changeDate(initDate);
+    }
+
+    const initSearch = urlParams.get('search');
+    if (initSearch) myInput.value = initSearch;
+    if (urlParams.get('case_sensitive') === 'true') caseSensitiveCheck.checked = true;
+
+    caseSensitiveCheck.addEventListener('change', () => change());
+
+    $("#myInput").on("keydown", function (event) {
+        if (event.key === 'Enter') { change(); }
     })
 
     setInterval(newLineChecker, 10000);
@@ -135,9 +165,54 @@ $(document).ready(function () {
     }
 })
 
-$(function () {
-    $(".dropdown-menu li a").click(function () {
-        $(".btn:first-child").text($(this).text());
-        $(".btn:first-child").val($(this).text());
-    });
-});
+class ChannelSelector {
+    constructor(input, menu) {
+        this.input = input;
+        this.menu = menu;
+        this.dropdown = new bootstrap.Dropdown(input, { autoClose: 'outside' });
+
+        input.addEventListener('click', () => this.dropdown.show());
+        input.addEventListener('focus', () => { input.select(); this.dropdown.show(); });
+        input.addEventListener('blur', () => setTimeout(() => this.dropdown.hide(), 150));
+        input.addEventListener('input', () => this._filter());
+        input.addEventListener('keydown', (e) => this._onKeydown(e));
+        input.addEventListener('hidden.bs.dropdown', () => this._onHidden());
+        menu.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-item')) {
+                channel = e.target.textContent.trim();
+                this.dropdown.hide();
+            }
+        }, true);
+    }
+
+    _filter() {
+        this.dropdown.show();
+        const query = this.input.value.replace(/^#/, '').toLowerCase();
+        this.menu.querySelectorAll('.dropdown-item').forEach(item => {
+            const name = item.textContent.trim().replace(/^#/, '').toLowerCase();
+            item.closest('li').style.display = name.includes(query) ? '' : 'none';
+        });
+    }
+
+    _onKeydown(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const firstVisible = [...this.menu.querySelectorAll('li')]
+                .find(li => li.style.display !== 'none' && li.querySelector('.dropdown-item'));
+            if (firstVisible) {
+                channel = firstVisible.querySelector('.dropdown-item').textContent.trim();
+                this.dropdown.hide();
+                changeChannel(channel);
+            }
+        } else if (e.key === 'Escape') {
+            this.dropdown.hide();
+        }
+    }
+
+    _onHidden() {
+        this.menu.querySelectorAll('li').forEach(li => li.style.display = '');
+        this.input.value = channel || '';
+    }
+}
+
+new ChannelSelector(channelButton, document.querySelector('.dropdown-menu'));
