@@ -5,14 +5,6 @@ const yargs = require('yargs')
 yargs.array('ignore')
 const args = yargs.argv
 const path = require('path')
-const deleteDuplicates = prisma.$queryRaw`
-     DELETE FROM "Message" a USING (
-      SELECT MIN(ctid) as ctid, content, created_at
-        FROM "Message"
-        GROUP BY content, created_at HAVING COUNT(*) > 1
-      ) b
-      WHERE a.content = b.content AND a.created_at = b.created_at
-      AND a.ctid <> b.ctid;`
 
 function appendError(filePath) {
     fs.appendFile('./errors.txt', filePath)
